@@ -1,0 +1,57 @@
+﻿@model RaspberryPIWebApp.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "Log in";
+    Layout = "~/Views/Shared/_LayoutCustom.cshtml";
+}
+<form method="POST">
+  
+    <div class="container-fluid">
+        <div class="row no-gutter">
+            <div class="signup-form animated fadeInLeft">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="signup-icon">
+                                <img src="~/img/icon/login.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="section-title signup-title">
+                                <h4>Login to your account</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            <div class="form-style-8">
+                                @using (Html.BeginForm("Login", "Account", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {role = "form"}))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <div class="col-md-6">
+                                        <input type="text" name="UserName" id="UserName" placeholder="User Name" required/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="password" name="Password" id="Password" placeholder="password" required/>
+                                    </div>
+
+                                    <div class="hvr-float-shadow">
+                                        <input type="submit" value="Login"/>
+                                        @*<input type="button" value="me" id="mustak"/>*@
+                                    </div>
+                                    <p> or &#160; <a> @Html.ActionLink("Forget Password.", "ForgotPassword", "Account")</a>
+                                    </p>
+
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+       
+</form>
+
+

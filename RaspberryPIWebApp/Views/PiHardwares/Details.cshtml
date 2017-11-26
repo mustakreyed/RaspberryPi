@@ -1,0 +1,59 @@
+﻿@model RaspberryPIWebApp.Models.PiHardware
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutCustom.cshtml";
+}
+
+
+
+<div class="container">
+<div class="row">
+
+    @*<h2>Create</h2>*@
+    <div class="col-md-12">
+        <div class="section-title signup-title">
+            <h4><br /><b>Details PiHardware</b></h4>
+        </div>
+    </div>
+
+    @*<h2>Details</h2>*@
+
+    <div>
+        @*<h4>PiHardware</h4>*@
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.PiModel.ModelName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.PiModel.ModelName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Mac)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Mac)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Password)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Password)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        <div class="container">
+            @Html.ActionLink("Edit", "Edit", new { id = Model.PiHardwareId }) |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </p>
+</div>
+   </div>

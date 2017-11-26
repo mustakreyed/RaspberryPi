@@ -1,0 +1,184 @@
+﻿@{
+    ViewBag.Title = "PinConfig";
+    Layout = "~/Views/Shared/_LayoutCustom.cshtml";
+    //var piHardware = ViewBag.piHardware;
+    //var user = ViewBag.user;
+    //var pinArray = ViewBag.pinArray;
+}
+<link href="/img/favicon.ico" type="image/x-icon" rel="shortcut icon">
+
+@*<div class="device-configuration-header animated fadeInUp">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="control-table-header">
+                        <h1>Your Easy Home Systems are listed - Select to configure</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-4">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                                                Home
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-4">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option2" checked>
+                                                Office Room
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+
+<div class="device-configuration">
+    <div class="container">
+        <div class="row">
+            @*<div class="col-md-2 col-xs-6">
+                    <div class="device-config-title-header">
+                        <h1>Current System:</h1>
+                    </div>
+                </div>*@
+            <div class="col-md-10 col-xs-6">
+                <div class="device-config-title">
+                   
+                </div>
+            </div>
+        </div>
+        @*<div class="row">
+                <div class="col-md-12">
+                    <div class="device-info">
+                        <table class="table">
+                            <tr>
+                                <td class="td-title">User:</td>
+                                <td class="td-data">@user.UserName</td>
+                                <td class="td-title">Email:</td>
+                                <td class="td-data" colspan="3">@user.Email</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="td-title">Model</td>
+                                <td class="td-data">@piHardware.PiModel.ModelName</td>
+                                <td class="td-title">Total Pins:</td>
+                                <td class="td-data">@piHardware.PiModel.NumberofPin</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>*@
+        <form method="POST">
+
+            <div>
+                <h5>Enter your Pi Name </h5><input type="text" name='PiName' id="PiName" placeholder='Pi Name' required class="form-control" />
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pin-configuration">
+                        <table class="table table-hover" id="tab_logic">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">
+                                        #
+                                    </th>
+                                    <th class="text-center">
+                                        Room Name
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id='addr0'>
+                                    <td>
+                                        1
+                                    </td>
+                                    <td>
+                                        <input type="text" name='RoomName' id="RoomName" placeholder='Room Name' required class="form-control" />
+                                    </td>
+
+                                </tr>
+                                <tr id='addr1'></tr>
+                            </tbody>
+                        </table>
+                        <a id="add_row" class="btn btn-info pull-left"><i class="icofont icofont-plus-circle"></i></a>
+                        <a id='delete_row' class="pull-left btn btn-danger"><i class="icofont icofont-minus-circle"></i></a>
+                        <button class="pull-right btn btn-success" type="submit">Save</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+@section scripts
+{
+
+    <script src="/Scripts/table - Copy.js"></script>
+    <script>
+
+        var pinconfig = function (pin1) {
+            this.pin = pin1;
+        };
+        var pinArray = new Array();
+        $(function() {
+            $("#addAgendaButton").click(function () {
+                var pin = document.getElementById("pin").value;
+                var deviceName = document.getElementById("deviceName").value;
+                var location = document.getElementById("location").value;
+                //var agendaText = $("#agendatextbox option:selected").text();
+                if (pin || deviceName || location === "") {
+                    swal("Please fillup all field.");
+                } else {
+                    var newPin = new pinconfig(pin);
+                    pinArray.push(newPin);
+
+                    document.getElementById("pin").value = "";
+                    document.getElementById("deviceName").value = "";
+                    document.getElementById("location").value = "";
+                    //Insert Table Row and It's Collum...
+                    var table = document.getElementById("pinConfigTable");
+                    var row = table.insertRow();
+                    var caseCell = row.insertCell(0);
+                    caseCell.innerHTML = '<div style="padding:2px"><span class="fa fa-calendar fa-lg "></span>  ' +
+                        newagenda.AgendaText +
+                        ' <span id =agenda' +
+                        i +
+                        ' class="fa fa-times style="font-size:10px""></span></div>';
+
+                    document.getElementById('agenda' + i).onclick = function () {
+                        var index = agendaArray.indexOf(newagenda);
+                        agendaArray.splice(index, 1);
+                        document.getElementById("agendaTable").deleteRow(index);
+                        //alert(caseHistoryArray);
+                    };
+                    i = i + 1;
+                }
+
+            });
+        });
+    </script>
+}

@@ -1,0 +1,55 @@
+﻿@model RaspberryPIWebApp.Models.PiPinforModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutCustom.cshtml";
+}
+<div class="container">
+    <div class="row">
+
+        @*<h2>Create</h2>*@
+        <div class="col-md-12">
+            <div class="section-title signup-title">
+                <h4><br /><b>Details Hardware Pin</b></h4>
+            </div>
+        </div>
+        @*<h2>Details</h2>*@
+
+        <div>
+            @*<h4>PiPinforModel</h4>*@
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.PiModel.ModelName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PiModel.ModelName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.PiPinNumber)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PiPinNumber)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+
+            </dl>
+        </div>
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.PiPinforModelId }) |
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+    </div>
+</div>
+        
+

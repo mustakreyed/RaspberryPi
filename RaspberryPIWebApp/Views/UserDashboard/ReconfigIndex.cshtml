@@ -1,0 +1,55 @@
+﻿
+@using RaspberryPIWebApp.Models
+@{
+    ViewBag.Title = "ReconfigIndex";
+    Layout = "~/Views/Shared/_LayoutCustom.cshtml";
+    List<Pi> piList = ViewBag.piList;
+}
+<!-- Alert Start -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="dashboard-info">
+                <div class="alert alert-info alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    Manage your <strong>Profile,</strong> configure your <strong>System</strong> and <strong>Devices</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="user-dashboard">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Nav tabs -->
+                <div class="card">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation"><a href='@Url.Action("Index","UserDashboard")' >Control Devices</a></li>
+                        <li role="presentation" class="active"><a href='@Url.Action("ReconfigIndex","UserDashboard")' >Reconfigure Devices</a></li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="control">
+                            <!-- device list start -->
+                            <div class="row">
+                                @foreach (var pi in piList)
+                                {
+                                    <div class="col-md-3">
+                                        <a href='@Url.Action("ReconfigDeviceNameandRoom","UserDashboard",new {piId=pi.PiId})'>
+                                            <div class="added_system hvr-underline-reveal animated bounceIn">
+                                                <h3>@pi.Name</h3>
+                                            </div>
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

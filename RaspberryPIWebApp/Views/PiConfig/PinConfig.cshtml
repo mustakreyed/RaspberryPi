@@ -1,0 +1,192 @@
+﻿@using RaspberryPIWebApp.Models
+
+@{
+    ViewBag.Title = "PinConfig";
+    Layout = "~/Views/Shared/_LayoutCustom.cshtml";
+    //var piHardware = ViewBag.piHardware;
+    //var user = ViewBag.user;
+    //var pinArray = ViewBag.pinArray;
+    List<Room> rooms = ViewBag.roomList;
+}
+<link href="/img/favicon.ico" type="image/x-icon" rel="shortcut icon">
+
+@*<div class="device-configuration-header animated fadeInUp">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="control-table-header">
+                    <h1>Your Easy Home Systems are listed - Select to configure</h1>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-4">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                                            Home
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-4">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option2" checked>
+                                            Office Room
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+
+<div class="device-configuration">
+    <div class="container">
+        <div class="row">
+        @*<div class="col-md-2 col-xs-6">
+            <div class="device-config-title-header">
+                <h1>Current System:</h1>
+            </div>
+        </div>*@
+        <div class="col-md-10 col-xs-6">
+            <div class="device-config-title">
+             </div>
+        </div>
+    </div>
+    @*<div class="row">
+        <div class="col-md-12">
+            <div class="device-info">
+                <table class="table">
+                    <tr>
+                        <td class="td-title">User:</td>
+                        <td class="td-data">@user.UserName</td>
+                        <td class="td-title">Email:</td>
+                        <td class="td-data" colspan="3">@user.Email</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="td-title">Model</td>
+                        <td class="td-data">@piHardware.PiModel.ModelName</td>
+                        <td class="td-title">Total Pins:</td>
+                        <td class="td-data">@piHardware.PiModel.NumberofPin</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>*@
+        <form method="POST">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pin-configuration">
+                        <table class="table table-hover" id="tab_logic">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">
+                                        #
+                                    </th>
+                                    <th class="text-center">
+                                        Pin Number
+                                    </th>
+                                    <th class="text-center">
+                                        Device Name
+                                    </th>
+                                    <th class="text-center">
+                                        Device Location
+                                    </th>
+                                    <th class="text-center">
+                                        Select Room
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id='addr0'>
+                                    <td>
+                                        1
+                                    </td>
+                                    <td>
+                                        <input type="text" name='PinNumber' placeholder='Pin Number' required class="form-control" />
+                                    </td>
+                                    <td>
+                                        <input type="text" name='ApplienceName' placeholder='Device Name' required class="form-control" />
+                                    </td>
+                                    <td>
+                                        <input type="text" name='Location' placeholder='Device Location' required class="form-control" />
+                                    </td>
+                                    <td>
+                                        <select name="RoomId" id="RoomId" class="form-control">
+                                            <option value="">---Select---</option>
+                                            @foreach (var aroom in rooms)
+                                            {
+                                                <option value="@aroom.RoomId">@aroom.RoomName</option>
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr id='addr1'></tr>
+                            </tbody>
+                        </table>
+                        <a id="add_row" class="btn btn-info pull-left"><i class="icofont icofont-plus-circle"></i></a>
+                        <a id='delete_row' class="pull-left btn btn-danger"><i class="icofont icofont-minus-circle"></i></a>
+                        <button class="pull-right btn btn-success" type="submit">Save</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+      
+    </div>
+</div>
+
+
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var i = 1;
+            $("#add_row").click(function () {
+                $('#addr' + i).html("<td>" + (i + 1) + "</td><td><input name='PinNumber" 
+                    + "' type='text' placeholder='Pin Number' class='form-control input-md' />" +
+                    " </td><td><input name='ApplienceName' type='text' placeholder='Device Name' " +
+                    "class='form-control input-md'></td><td><input name='Location' type='text'" +
+                    " placeholder='Device Location' class='form-control input-md'></td> " +
+                    "<td>" +
+                    "<select name='RoomId' id='RoomId' class='form-control'>" +
+                    "<option value=''>---Select---</option>" +
+                    @foreach (var aroom in rooms)
+                    {
+                        @:"<option value='@aroom.RoomId'>@aroom.RoomName</option>"+
+                    } 
+                    +
+                    "</select></td>");
+
+                $('#tab_logic').append('<tr id="addr' + (i + 1) + '"></tr>');
+                i++;
+            });
+            $("#delete_row").click(function () {
+                if (i > 1) {
+                    $("#addr" + (i - 1)).html('');
+                    i--;
+                }
+            });
+
+        });
+    </script>
+   
+    
+}

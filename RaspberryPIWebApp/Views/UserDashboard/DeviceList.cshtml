@@ -1,0 +1,180 @@
+﻿@using RaspberryPIWebApp.Models
+@{
+    ViewBag.Title = "User Deshbord";
+    Layout = "~/Views/Shared/_LayoutCustom.cshtml";
+    List<Pi> piList = ViewBag.piList;
+    List<Room> roomList = ViewBag.roomList;
+    string piName = ViewBag.piName;
+    List<PiPin> deviceList = ViewBag.deviceList;
+    string roomName = ViewBag.roomName;
+}
+@using (Html.BeginForm()) { 
+<!-- Alert Start -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="dashboard-info">
+                <div class="alert alert-info alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    Manage your <strong>Profile,</strong> configure your <strong>System</strong> and <strong>Devices</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="user-dashboard">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Nav tabs -->
+                    <div class="card">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active"><a href='@Url.Action("Index", "UserDashboard")'>Control Devices</a></li>
+                            <li role="presentation"><a href='@Url.Action("ReconfigIndex","UserDashboard")'>Reconfigure Devices</a></li>
+                        </ul>
+                        <!-- Tab panes -->
+
+
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="control">
+                                <!-- device list start -->
+                                <div class="row">
+                                    @foreach (var pi in piList)
+                                    {
+                                        <div class="col-md-3">
+                                            <a href='@Url.Action("RoomList", "UserDashboard", new {piId = pi.PiId})'>
+                                                <div class="added_system hvr-underline-reveal animated bounceIn">
+                                                    <h3>@pi.Name</h3>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="row" style="margin: 5px; padding-top: 10px">
+                                    <div class="">
+                                        <p class="no-bottom-margin">
+                                            Selected System: &nbsp;<font color="#3fa009"><i class="icofont icofont-ui-home"></i> @piName</font>
+                                        </p>
+                                        <p style="color: #7e7e7e; font-weight: 300">Select room to list configured devices</p>
+                                        <div class="rooms">
+                                            <ul class="nav" role="tablist">
+                                                @foreach (var room in roomList)
+                                                {
+                                                    <li><a href='@Url.Action("DeviceList", "UserDashboard", new {roomId = room.RoomId, piId = room.PiId})'>@room.RoomName</a></li>
+                                                }
+                                            </ul>
+
+                                            <div class="col-md-12">
+                                                <div class="tab-content tab-content1">
+                                                    <div role="tabpanel" class="tab-pane active" id="bedroom">
+                                                        <div class="device-control-table animated fadeIn">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="control-table-header">
+                                                                        <h1>Devices in your @roomName</h1>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            @foreach (var device in deviceList)
+                                                            {
+                                                                <!-- device starts here-->
+                                                                <div class="device-container">
+                                                                    <div class="row">
+                                                                        <div class="col-md-4">
+                                                                            <div class="device-title">
+                                                                                <h4>@device.ApplienceName</h4>
+                                                                                <p><i class="icofont icofont-location-pin"></i>&nbsp;@device.Location</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4 col-md-offset-4">
+                                                                            <div class="device-control-buttons">
+                                                                                <div class="btn-group  btn-group-justified" role="group" aria-label="...">
+
+
+
+                                                                                    @if (device.PinStatus == "True")
+                                                                                    {
+                                                                                        <div class="btn-group" role="group">
+                                                                                            <button disabled type="button" id="onButton @device.PiPinId" class="btn btn-info btn-sm" onclick="deviceOn(@device.PiPinId) ">Turn On</button>
+                                                                                        </div>
+                                                                                        <div class="btn-group" role="group">
+                                                                                            <button type="button" id="offButton @device.PiPinId" class="btn btn-danger btn-sm" onclick="deviceOff(@device.PiPinId) ">Turn Off</button>
+                                                                                        </div>
+                                                                                    }
+                                                                                  @if (device.PinStatus == "False")
+                                                                                  {
+                                                                                        <div class="btn-group" role="group">
+                                                                                            <button type="button" id="onButton @device.PiPinId" class="btn btn-info btn-sm" onclick="deviceOn(@device.PiPinId) ">Turn On</button>
+                                                                                        </div>
+                                                                                        <div class="btn-group" role="group">
+                                                                                            <button disabled type="button" id="offButton @device.PiPinId" class="btn btn-danger btn-sm" onclick="deviceOff(@device.PiPinId) ">Turn Off</button>
+                                                                                        </div>
+                                                                                    }
+
+
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- device end here-->
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section scripts
+{
+    <script>
+
+        function deviceOn(id) {
+           var json = { piPinId: id };
+            $.ajax({
+                type: "POST",
+                url: '/UserDashboard/ButtonOn',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function (data) {
+                    location.reload();
+                   }
+            });
+        }
+        function deviceOff(id) {
+           
+            var json = { piPinId: id };
+            $.ajax({
+                type: "POST",
+                url: '/UserDashboard/ButtonOff',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function (data) {
+                    location.reload();
+                   }
+            });
+        }
+
+    </script>
+}
+
+
+
+
+

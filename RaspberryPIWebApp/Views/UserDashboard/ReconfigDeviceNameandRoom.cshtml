@@ -1,0 +1,137 @@
+﻿@model RaspberryPIWebApp.Models.Pi
+@{
+    ViewBag.Title = "ReconfigDeviceNameandRoom";
+    Layout = "~/Views/Shared/_LayoutCustom.cshtml";
+    int j = 1;
+}
+<link href="/img/favicon.ico" type="image/x-icon" rel="shortcut icon">
+
+
+<!-- Alert Start -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="dashboard-info">
+                <div class="alert alert-info alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    Manage your <strong>Profile,</strong> configure your <strong>System</strong> and <strong>Devices</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Alert end -->
+<div class="user-dashboard">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Nav tabs -->
+                <div class="card">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" ><a href='@Url.Action("Index","UserDashboard")'>Control Devices</a></li>
+                        <li role="presentation" class="active"><a href='@Url.Action("ReconfigIndex","UserDashboard")'>Reconfigure Devices</a></li>
+                    </ul>
+
+                    <div class="device-configuration" style="margin-top: 10px">
+                        <div class="">
+                            <div class="row">
+
+                                <div class="col-md-10 col-xs-6">
+                                    <div class="device-config-title">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <form method="POST">
+
+                                <div>
+                                    <h5 align="center">Your Pi Name </h5>
+                                    <input type="text" required value="@Model.Name" name='PiName' id="PiName" placeholder='Pi Name' required class="form-control" />
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="pin-configuration">
+                                            <table class="table table-hover" id="tab_logic">
+                                                <thead>
+                                                    <tr>
+                                                        @*<th class="text-center">
+                                                            #
+                                                        </th>*@
+                                                        <th class="text-center">
+                                                            Room Name
+                                                        </th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var room in Model.Rooms)
+                                                    {
+                                                        <text>
+                                                            <tr id='addr'>
+                                                                @*<td>
+                                                                    @j
+                                                                </td>*@
+                                                                <td>
+                                                                    <input type="hidden" id="" name="RoomId" value="@room.RoomId" />
+                                                                    <input type="text" value="@room.RoomName" name='RoomName' id="RoomName" placeholder='Room Name' required class="form-control"/>
+                                                                </td>
+
+                                                            </tr>
+                                                        </text>
+                                                        j++;
+                                                    }
+
+                                                    <tr id='addr1'></tr>
+                                                </tbody>
+                                            </table>
+                                            <a id="add_row" class="btn btn-info pull-left"><i class="icofont icofont-plus-circle"></i></a>
+                                            <a id='delete_row' class="pull-left btn btn-danger"><i class="icofont icofont-minus-circle"></i></a>
+                                            <button class="pull-right btn btn-success" type="submit">Save</button><a class="col-md-offset-8 btn btn-success" href='@Url.Action("ReconfigRoom","UserDashboard",new { piId = @Model.PiId})'>Go to Pin</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var i = @j + 1;
+
+            $("#add_row").click(function () {
+                $('#addr' + i).html("<td><input name='RoomName' id='RoomName' type='text' required placeholder='Room Name' class='form-control input-md' /> </td>");
+
+                $('#tab_logic').append('<tr id="addr' + (i + 1) + '"></tr>');
+                i++;
+            });
+            $("#delete_row").click(function () {
+                if (i > 1) {
+                    $("#addr" + (i - 1)).html('');
+                    i--;
+                }
+            });
+
+        });
+    </script>
+  
+}
+
+
+
+

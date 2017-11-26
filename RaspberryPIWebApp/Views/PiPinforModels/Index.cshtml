@@ -1,0 +1,59 @@
+﻿@model IEnumerable<RaspberryPIWebApp.Models.PiPinforModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCustom.cshtml";
+}
+    
+    
+<div class="container">
+    <div class="row">
+        @*<h2>Index</h2>*@
+        <div class="col-md-12">
+            <div class="section-title signup-title">
+                <h4><br/><b>Hardware Pin Information</b></h4>
+            </div>
+        </div>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PiModel.ModelName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PiPinNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PiModel.ModelName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PiPinNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.PiPinforModelId }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.PiPinforModelId }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.PiPinforModelId })
+                    </td>
+                </tr>
+            }
+           
+        </table>
+        <div class="container">
+            <p>
+                @Html.ActionLink("Create New ", "Create")
+                <br/>
+            </p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    @* ....... Me Started  ........*@
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Easy Home - @ViewBag.Title</title>
+    <link href="/img/favicon.ico" type="image/x-icon" rel="shortcut icon">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <link href="~/Content/responsive.css" rel="stylesheet" />
+    <link href="~/Content/hover.css" rel="stylesheet" />
+    <link href="~/Content/animate.css" rel="stylesheet" />
+    <link href="~/Content/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/Content/owl.theme.default.min.css" rel="stylesheet" />
+    <link href="~/Content/icofont.css" rel="stylesheet" />
+    <link href="~/Content/bounce-arrow.css" rel="stylesheet" />
+    <link href="~/Content/form.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
+</head>
+<body>
+ 
+    @*<div class="container">
+        <div class="header">
+            <div class="row">
+                <div class="col-md-8">
+                    <a href="@Url.Action("Index", "Home")">
+                      <div class="logo">
+                            <img src="~/img/logo.png" alt="Logo">
+                       </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <div class="user-button">
+                       @Html.Partial("_LoginPartial")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+   
+        <div class="container">
+            <div class="header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="@Url.Action("Index", "Home")">
+                  <div class="logo">
+                        <img src="~/img/logo.png" alt="Logo">
+                  </div>
+                </a>
+            </div>
+            <div class="user-button" style="margin-bottom: 5px">
+                <ul class="nav navbar-nav" style="align-content: center">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>@Html.ActionLink("Pi Model", "Index", "PiModels")</li>
+                        <li>@Html.ActionLink("Hardware Pin", "Index", "PiPinforModels")</li>
+                        <li>@Html.ActionLink("Pi Hardware", "Index", "PiHardwares")</li>
+                    }
+                   
+                  </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+   
+     @RenderBody()
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="footer-logo">
+                        <img src="~/img/logo.png" alt="">
+                        <p>This project is a final year project being done by the above mentioned team members under the Department of Computer Science and Engineering</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="footer-section-title">
+                        <p>Special Thanks</p>
+                    </div>
+                    <div class="footer-section-content">
+                        <div class="supervisor-image">
+                            <img src="~/img/aniruddha-rakshit.jpg" class="hvr-grow" alt="">
+                        </div>
+                        <div class="supervisor-details">
+                            <h4>Mr Aniruddha Rakshit</h4>
+                            <h5>Lecturer, Department of CSE</h5>
+                            <p>Supervisor of this project</p>
+                        </div>
+                        <div class="supervisor-social-media">
+                            <a href=""><i class="icofont icofont-social-facebook"></i></a>
+                            <a href=""><i class="icofont icofont-social-twitter"></i></a>
+                            <a href=""><i class="icofont icofont-social-skype"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="footer-section-title">
+                        <p>Quick Links</p>
+                    </div>
+                    <div class="footer-section-content">
+                        <div class="quick-links">
+                            <ul>
+                                <li><a href="">Login</a></li>
+                                <li><a href="">Sign Up</a></li>
+                                <li><a href="">FAQ</a></li>
+                                <li><a href="">Demo Video</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="footer-section-title">
+                        <p>Stay In Touch</p>
+                    </div>
+                    <div class="footer-section-content">
+                        <div class="contact-info">
+                            <ul>
+                                <li><i class="icofont icofont-location-pin"></i><p>Dhaka, BD</p></li>
+                                <li><i class="icofont icofont-telephone"></i><p>01425148547</p></li>
+                                <li><i class="icofont icofont-email"></i><p>help@rpi.com</p></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Scripts/owl.carousel.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/main.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

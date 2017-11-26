@@ -1,0 +1,183 @@
+﻿@model RaspberryPIWebApp.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_LayoutCustom.cshtml";
+}
+<style>
+    label.error {
+        color: #a94442;
+        font-weight: 400;
+    }
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.6.2/sweetalert2.min.css">
+<link href="~/Content/JQuery UI/jquery-ui.min.css" rel="stylesheet" />
+
+<div class="container-fluid">
+    <div class="row no-gutter">
+        <div class="signup-form animated fadeInLeft">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="signup-icon">
+                            <img src="~/img/icon/signup.png" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="section-title signup-title">
+                            <h4>Create Your Easy Home Account</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        @Html.ValidationSummary("", new { @class = "text-danger" })
+                        <div class="form-style-8">
+                            @using (Html.BeginForm("Register", "Account", null, FormMethod.Post, new { role = "form", @id = "registerForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <div class="col-md-6">
+                                    <input type="text" name="Name" id="Name" placeholder="your name" required />
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="email" name="Email" id="Email" placeholder="email" required />
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="password" name="Password" id="Password" placeholder="password" required />
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="password" name="ConfirmPassword" id="ConfirmPassword" placeholder="confirm password" required />
+                                </div>
+
+                                <div class="hvr-float-shadow" style="margin-top: 15px">
+                                    <input id="registerButton" type="button" value="Signup"/>
+                                </div>
+                            }
+                            @using (Html.BeginForm(null, null, null, FormMethod.Post, new { role = "form", @id = "verifyForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <div title="Varify your Raspberry Pi">
+                                    <fieldset>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label for="Mac">Raspberry Pi MAC</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="text" name="Mac" id="Mac" class="form-control" required>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-top: 5px">
+                                            <div class="col-md-6">
+                                                <label for="piPassword">Password</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="password" name="piPassword" id="piPassword" class="form-control" required>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/sweetalert2/6.6.2/sweetalert2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.6/jquery.validate.unobtrusive.js"></script>
+   
+     <script src="~/Content/JQuery UI/jquery-ui.min.js"></script>
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    <script>
+        $(document).ready(function () {
+            $("#registerForm").validate({
+                rules: {
+                    Name: "required",
+                    Email: true,
+                    Password: "required",
+                    ConfirmPassword: {
+                        equalTo: "#Password"
+                    }
+                }
+
+            });
+        });
+        $(document).ready(function () {
+            $("#verifyForm").validate({
+                rules: {
+                    Mac: "required",
+                    piPassword: "required"
+                },
+                messages: {
+                    Mac: "This fild is Required",
+                    piPassword: "This fild is required"
+                }
+            });
+        });
+
+
+        $(function () {
+            function verifyRaspberryPi() {
+                var mac = $("#Mac").val();
+                var password = $("#piPassword").val();
+                var json = { mac: mac, password: password };
+                $.ajax({
+                    type: "POST",
+                    url: '/Home/VerifyRpiMac',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+                        //alert(data);
+                        if (data === "success") {
+                            $("#registerForm").submit();
+                        } else {
+                            swal({
+                                text: 'Your Raspberry Pi is not Registered.',
+                                type: 'warning',
+                                timer: 3000
+                            });
+                        }
+                    }
+                });
+            }
+
+            $("#verifyForm").dialog({
+                autoOpen: false,
+                height: '225',
+                width: '400',
+                show: { effect: "blind", duration: 300 },
+                hide: { effect: "fold", duration: 300 },
+                open: function (event, ui) {
+                    $("#verifyForm").css('overflow', 'hidden');
+                },
+                buttons: {
+
+                    "Verify": function () {
+                        if ($("#verifyForm").valid()) {
+                            verifyRaspberryPi(),
+                            $(this).dialog("close");
+                            document.getElementById("Mac").value = "";
+                            document.getElementById("piPassword").value = "";
+                        }
+
+                    },
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            $("#registerButton").click(function () {
+              
+                if ($("#registerForm").valid()) {
+                    $("#verifyForm").dialog("open");
+                }
+
+            });
+        });
+       
+    </script>
+}

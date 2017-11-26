@@ -1,0 +1,64 @@
+.form-style-8{
+    font-weight: 100;
+    width: auto;
+    padding: 30px;
+    margin: 50px auto;
+}
+.form-style-8 input[type="text"],
+.form-style-8 input[type="date"],
+.form-style-8 input[type="datetime"],
+.form-style-8 input[type="email"],
+.form-style-8 input[type="number"],
+.form-style-8 input[type="search"],
+.form-style-8 input[type="time"],
+.form-style-8 input[type="url"],
+.form-style-8 input[type="password"],
+.form-style-8 textarea,
+.form-style-8 select 
+{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 7px;
+    border: none;
+    border-bottom: 1px solid #0399ef;
+    background: transparent;
+    margin-bottom: 25px;
+    font: 14px;
+    font-weight: 300;
+    height: 45px;
+    color: #000;
+}
+.form-style-8 p{
+    display: inline-table;
+    margin-left: 20px;
+}
+.form-style-8 ul{}
+
+.form-style-8 textarea{
+    resize:none;
+    overflow: hidden;
+}
+.form-style-8 input[type="button"], 
+.form-style-8 input[type="submit"]{
+    background-color: #0399ef;
+    border: 1px solid #0399ef;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Open Sans Condensed",sans-serif;
+    font-size: 14px;
+    margin-left: 15px;
+    margin-top: -6px;
+    padding: 5px 45px;
+    text-decoration: none;
+}
+.form-style-8 input[type="button"]:hover, 
+.form-style-8 input[type="submit"]:hover {
+    background:linear-gradient(to bottom, #0399ef 5%, #0399ef 100%);
+    background-color:#0399ef;
+    color: #fff
+}

@@ -1,0 +1,54 @@
+﻿@model IEnumerable<RaspberryPIWebApp.Models.PiModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCustom.cshtml";   
+}
+
+@*<h2>Index</h2>*@
+                      <div class="container">
+                          <div class="row">
+                              <div class="col-md-12">
+                                  <div class="section-title signup-title">
+                                      <h4><br /><b>Raspberry Pi Mode</b></h4>
+                                  </div>
+                              </div>
+                              @*<p>
+                                  @Html.ActionLink("Create New", "Create")
+                              </p>*@
+                              <table class="table">
+                                  <tr>
+                                      <th>
+                                          @Html.DisplayNameFor(model => model.ModelName)
+                                      </th>
+                                      <th>
+                                          @Html.DisplayNameFor(model => model.NumberofPin)
+                                      </th>
+                                      <th></th>
+                                  </tr>
+
+                                  @foreach (var item in Model)
+                                  {
+                                      <tr>
+                                          <td>
+                                              @Html.DisplayFor(modelItem => item.ModelName)
+                                          </td>
+                                          <td>
+                                              @Html.DisplayFor(modelItem => item.NumberofPin)
+                                          </td>
+                                          <td>
+                                              @Html.ActionLink("Edit", "Edit", new { id = item.PiModelId }) |
+                                              @Html.ActionLink("Details", "Details", new { id = item.PiModelId }) |
+                                              @Html.ActionLink("Delete", "Delete", new { id = item.PiModelId })
+                                          </td>
+                                      </tr>
+                                  }
+
+                              </table>
+                                <div class="container">
+                                  <p>
+                                      @Html.ActionLink("Create New", "Create")
+                                 </p>
+                                </div>
+                          </div>
+                      </div>

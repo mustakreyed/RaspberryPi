@@ -1,0 +1,72 @@
+﻿@using RaspberryPIWebApp.Models
+@{
+    ViewBag.Title = "User Deshbord";
+    Layout = "~/Views/Shared/_LayoutCustom.cshtml";
+    List<Pi> piList = ViewBag.piList;
+    List<Room> roomList = ViewBag.roomList;
+    string piName = ViewBag.piName;
+}
+
+<!-- Alert Start -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="dashboard-info">
+                <div class="alert alert-info alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    Manage your <strong>Profile,</strong> configure your <strong>System</strong> and <strong>Devices</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="user-dashboard">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Nav tabs -->
+                <div class="card">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href='@Url.Action("Index","UserDashboard")'>Control Devices</a></li>
+                        <li role="presentation"><a href='@Url.Action("ReconfigIndex","UserDashboard")'>Reconfigure Devices</a></li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="control">
+                            <!-- device list start -->
+                            <div class="row">
+                                @foreach (var pi in piList)
+                                {
+                                    <div class="col-md-3">
+                                        <a href='@Url.Action("RoomList","UserDashboard",new {piId=pi.PiId})'>
+                                            <div class="added_system hvr-underline-reveal animated bounceIn">
+                                                <h3>@pi.Name</h3>
+                                            </div>
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                            <div class="row" style="margin: 5px;padding-top: 10px">
+                                <div >
+                                    <p class="no-bottom-margin">
+                                        Selected System: &nbsp;<font color="#3fa009"><i class="icofont icofont-ui-home"></i> @piName</font>
+                                    </p>
+                                    <p style="color: #7e7e7e; font-weight: 300">Select room to list configured devices</p>
+                                    <div class="rooms">
+                                        <ul class="nav" role="tablist">
+                                            @foreach (var room in roomList)
+                                            {
+                                                <li><a href='@Url.Action("DeviceList", "UserDashboard", new {roomId = room.RoomId, piId = room.PiId})'>@room.RoomName</a></li>
+
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

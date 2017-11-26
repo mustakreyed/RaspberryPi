@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNet.Identity
+@if (!Request.IsAuthenticated)
+{
+    @*<a href="@Url.Action("Login", "Account")" class="btn btn-default loginButton pull-right hidden-xs" title="Login">
+        <span class="glyphicon glyphicon-log-in"></span> Login
+    </a>
+    <a href="@Url.Action("Login", "Account")" class="btn btn-default loginButton pull-right visible-xs">
+        <span class="glyphicon glyphicon-log-in"></span> Login
+    </a>*@
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}
+else
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="dropdown loginButton pull-right hidden-xs">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="@User.Identity.Name">
+                <span class="glyphicon glyphicon-user"></span> @User.Identity.GetUserName()
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  @if (User.IsInRole("User"))
+                   {
+                       <li><a href="@Url.Action("Index", "UserDashboard")"><span class="glyphicon glyphicon-stats"></span> User Dashboard</a></li>
+                  }
+                <li role="separator" class="divider"></li>
+                <li><a href="@Url.Action("ChangePassword", "Manage")"><span class="glyphicon glyphicon-cog"></span> Change Password</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="javascript:document.getElementById('logoutForm').submit()"><span class="glyphicon glyphicon-log-out"></span> Log off</a></li>
+            </ul>
+        </div>
+        <a href="@Url.Action("Index", "Manage")" class="btn btn-default loginButton visible-xs">
+            <span class="glyphicon glyphicon-cog"></span> Settings
+        </a>
+        <a href="@Url.Action("LogOff", "Account")" class="btn btn-default loginButton visible-xs" title="Logout">
+            <span class="glyphicon glyphicon-log-out"></span> Logout
+        </a>
+    }
+}
