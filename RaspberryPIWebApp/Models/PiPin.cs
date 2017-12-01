@@ -16,5 +16,6 @@ namespace RaspberryPIWebApp.Models
         public int PiId { get; set; }
         public virtual Pi Pi { get; set; }
         public virtual Room Room { get; set; }
+      
     }
 }

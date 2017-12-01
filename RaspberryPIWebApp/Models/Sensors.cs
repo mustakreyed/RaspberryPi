@@ -9,9 +9,13 @@ namespace RaspberryPIWebApp.Models
     {
         public int SensorsId { get; set; }
         public string Temparature { get; set; }
+        public int TemparatureControledPin { get; set; }
         public string Light { get; set; }
+        public int LightControledPin { get; set; }
         public string Water { get; set; }
+        public int WaterControledPin { get; set; }
         public int PiId { get; set; }
         public virtual Pi Pi { get; set; }
+
     }
 }

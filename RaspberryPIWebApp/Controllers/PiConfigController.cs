@@ -79,8 +79,21 @@ namespace RaspberryPIWebApp.Controllers
            
             return RedirectToAction("Index","Home");
         }
+  
+        public ActionResult SensorConfig()  
+        {
+            return View();
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult SensorConfig(int waterControledPin,int lightControledPin,int temparatureControledPin)
+        {
+            string loginUser = User.Identity.GetUserId();
+            var pi = db.Pis.FirstOrDefault(p => p.ApplicationUserId == loginUser);
+            var sensor=db.Sensors.FirstOrDefault(s=>s.PiId==pi.PiId);
 
-       
-        
+            return View();
+        }
+
     }
 }

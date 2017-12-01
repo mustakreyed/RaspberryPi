@@ -17,6 +17,6 @@ namespace RaspberryPIWebApp.Models
         public virtual ApplicationUser ApplicationUser { get; set; }
         public List<PiPin> PiPins { get; set; }
         public virtual List<Room> Rooms  { get; set; }
-        public virtual List<Sensors> Sensors  { get; set; }
+       
     }   
 }

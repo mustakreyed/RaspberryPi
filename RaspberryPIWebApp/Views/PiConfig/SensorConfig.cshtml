@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "SensorConfig";
+    Layout = "~/Views/Shared/_LayoutCustom.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="section-title signup-title">
+                <h4 style="border-bottom: 2px solid #0399ef;"><br/><b>Config Sensor</b></h4>
+            </div>
+        </div>
+        
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal" style="margin-top: 50px;margin-bottom: 100px">
+                <hr />
+               
+                <div class="form-group">
+                    <div class="control-label col-md-4 ">
+                        Temparature Sensor:
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="temparatureControledPin" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="control-label col-md-4 ">
+                        Light Sensor:
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="lightControledPin" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="control-label col-md-4 ">
+                        Water Level Sensor:
+                    </div>
+                    <div class="col-md-6">
+                            <input type="text" class="form-control"  name="waterControledPin"/>
+                    </div>
+                </div>
+               
+
+                <div class="form-group">
+                    <div class="col-md-offset-8 col-md-1">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+

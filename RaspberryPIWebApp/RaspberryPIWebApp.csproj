@@ -271,6 +271,10 @@
     <Compile Include="Migrations\201711251523094_waterSensorFieldAdd.Designer.cs">
       <DependentUpon>201711251523094_waterSensorFieldAdd.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711291600316_sensormodelRedesign.cs" />
+    <Compile Include="Migrations\201711291600316_sensormodelRedesign.Designer.cs">
+      <DependentUpon>201711291600316_sensormodelRedesign.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -453,12 +457,12 @@
     <Content Include="Views\PiPinforModels\Details.cshtml" />
     <Content Include="Views\PiPinforModels\Edit.cshtml" />
     <Content Include="Views\PiPinforModels\Index.cshtml" />
+    <Content Include="Views\PiConfig\SensorConfig.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\JQuery UI\external\" />
     <Folder Include="Content\JQuery UI\images\" />
-    <Folder Include="test\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -512,6 +516,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711251523094_waterSensorFieldAdd.resx">
       <DependentUpon>201711251523094_waterSensorFieldAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711291600316_sensormodelRedesign.resx">
+      <DependentUpon>201711291600316_sensormodelRedesign.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

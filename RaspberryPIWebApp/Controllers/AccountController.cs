@@ -68,7 +68,7 @@ namespace RaspberryPIWebApp.Controllers
                 return Json(new { status = 0 }, JsonRequestBehavior.AllowGet);
             }
         }
-
+        //http://easyhome.work/account/UserVarify?userName="data"&password="data"
         [AllowAnonymous]
        public JsonResult UserVarify(string userName, string password)
         {
@@ -114,8 +114,8 @@ namespace RaspberryPIWebApp.Controllers
             
         }
         [AllowAnonymous]
-        //http://easyhome.work/SensorPost?userName="data"&password="data"&water="data"&temparature="data"&light="data"
-        public void SensorPost(string userName, string password ,string water,string temparature, string light)
+        //http://easyhome.work/account/SensorPost?userName=abdullah&password=123456&water=7&temparature=28.5&light=1
+        public void SensorPost(string userName, string password, string water, string temparature, string light)
         {
             var result = SignInManager.PasswordSignIn(userName, password, false, false);
 
@@ -124,30 +124,96 @@ namespace RaspberryPIWebApp.Controllers
                 var user = db.Users.FirstOrDefault(u => u.UserName == userName);
                 var userPi = db.Pis.FirstOrDefault(p => p.ApplicationUserId == user.Id);
                 var sensor = db.Sensors.FirstOrDefault(s => s.PiId == userPi.PiId);
-                if (sensor!=null)
+                if (sensor != null)
                 {
-                    sensor.Temparature = temparature;
-                    sensor.Light = light;
-                    sensor.Water = water;
+                   
+                    SaveSensorData(water, temparature, light, sensor);
                     db.Entry(sensor).State = EntityState.Modified;
                     db.SaveChanges();
                 }
                 else
                 {
-                    Sensors newsensor=new Sensors();
-                    newsensor.Temparature = temparature;
-                    newsensor.Light = light;
-                    newsensor.Water = water;
+                    Sensors newsensor = new Sensors();
+                    SaveSensorData(water, temparature, light, newsensor);
+                    newsensor.PiId = userPi.PiId;
                     db.Sensors.Add(newsensor);
                     db.SaveChanges();
                 }
-                
+
             }
             else
             {
                 throw new Exception();
             }
 
+        }
+        public void SaveSensorData(string water, string temparature, string light, Sensors newsensor)
+        {
+            //For Water Sensor...........
+            if (water == "9")
+            {
+                newsensor.Water = "overflooded";
+            }
+            else if (water == "8")
+            {
+                newsensor.Water = "too high";
+
+            }
+            else if (water == "7")
+            {
+                newsensor.Water = "high";
+            }
+            else if (water == "6")
+            {
+                newsensor.Water = "medium high";
+            }
+            else if (water == "5")
+            {
+                newsensor.Water = "medium";
+            }
+            else if (water == "4")
+            {
+                newsensor.Water = "medium low";
+            }
+            else if (water == "3")
+            {
+                newsensor.Water = "low";
+            }
+            else if (water == "2")
+            {
+                newsensor.Water = "very low";
+            }
+            else if (water == "1")
+            {
+                newsensor.Water = "critical";
+            }
+            else if (water == "0")
+            {
+                newsensor.Water = "empty";
+            }
+            else
+            {
+
+            }
+            //For Light Sensor...........
+            if (light == "0")
+            {
+                newsensor.Light = "low";
+            }
+            else if (light == "1")
+            {
+                newsensor.Light = "mid";
+            }
+            else if (light == "2")
+            {
+                newsensor.Light = "high";
+            }
+            else
+            {
+
+            }
+            //For Temparature Sensor...........
+            newsensor.Temparature = temparature;
         }
         //[AllowAnonymous]
         //public void LightPost(string userName, string password, string light)
