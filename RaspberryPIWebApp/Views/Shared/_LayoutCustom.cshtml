@@ -57,11 +57,13 @@
             </div>
             <div class="user-button" style="margin-bottom: 5px">
                 <ul class="nav navbar-nav" style="align-content: center">
+                    @*<li>@Html.ActionLink("Sensor Config", "SensorConfig", "PiConfig")</li>*@
                     @if (User.IsInRole("Admin"))
                     {
                         <li>@Html.ActionLink("Pi Model", "Index", "PiModels")</li>
                         <li>@Html.ActionLink("Hardware Pin", "Index", "PiPinforModels")</li>
                         <li>@Html.ActionLink("Pi Hardware", "Index", "PiHardwares")</li>
+                        
                     }
                    
                   </ul>

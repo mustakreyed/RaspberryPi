@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -92,7 +93,16 @@ namespace RaspberryPIWebApp.Controllers
             var pi = db.Pis.FirstOrDefault(p => p.ApplicationUserId == loginUser);
             var sensor=db.Sensors.FirstOrDefault(s=>s.PiId==pi.PiId);
 
-            return View();
+            if (sensor != null)
+            {
+                sensor.WaterControledPin = waterControledPin;
+                sensor.LightControledPin = lightControledPin;
+                sensor.TemparatureControledPin = temparatureControledPin;
+                db.Entry(sensor).State=EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Index", "UserDashboard");
         }
 
     }
