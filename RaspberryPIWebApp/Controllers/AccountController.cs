@@ -127,68 +127,71 @@ namespace RaspberryPIWebApp.Controllers
                 if (sensor != null)
                 {
 
-                    SaveSensorData(water, temparature, light, sensor);
+                    //SaveSensorData(water, temparature, light, sensor);
+                     sensor.Water = water;
+                     newsensor.Temparature = temparature;
+                     newsensor.Light = light;
                     db.Entry(sensor).State = EntityState.Modified;
                     int status = db.SaveChanges();
                     if (status.Equals(1))
                     {
-                        //water Sensor Automated Contol Logic....................
+                        //light Sensor Automated Contol Logic....................
                         var piPin = db.PiPins.FirstOrDefault(p => p.PiId == sensor.PiId && p.PinNumber == sensor.LightControledPin);
                         if (piPin != null)
                         {
-                            if (light == "0" && light == "1")
+                            if (light =="true" )
                             {
                                 piPin.PinStatus = "True";
                                 db.Entry(piPin).State = EntityState.Modified;
-                                int a = db.SaveChanges();
                             }
-                            else if (light == "2")
+                            else if (light == "false")
                             {
                                 piPin.PinStatus = "False";
                                 db.Entry(piPin).State = EntityState.Modified;
-                                int a = db.SaveChanges();
                             }
                             else { }
+                    
+                                int a = db.SaveChanges();
                         }
 
-                        //Temparature Sensor Automated Contol Logic....................
+                        //Water Sensor Automated Contol Logic....................
                         var piPin1 = db.PiPins.FirstOrDefault(p => p.PiId == sensor.PiId && p.PinNumber == sensor.WaterControledPin);
-                        int waterl = Convert.ToInt32(water);
+                        //int waterl = Convert.ToInt32(water);
                         if (piPin1 != null)
                         {
-                            if (waterl <3)
-                            {
-                                piPin1.PinStatus = "True";
-                                db.Entry(piPin1).State = EntityState.Modified;
-                                int a = db.SaveChanges();
-                            }
-                            else if (waterl >6)
+                            if (water == "false)
                             {
                                 piPin1.PinStatus = "False";
                                 db.Entry(piPin1).State = EntityState.Modified;
-                                int a = db.SaveChanges();
+                            }
+                            else if (water == "true)
+                            {
+                                piPin1.PinStatus = "True";
+                                db.Entry(piPin1).State = EntityState.Modified;
                             }
                             else { }
+                            
+                                int a = db.SaveChanges();
                         }
                         //temparaure Sensor Automated Contol Logic....................
-                        var piPin2 = db.PiPins.FirstOrDefault(p => p.PiId == sensor.PiId && p.PinNumber == sensor.TemparatureControledPin);
-                        if (piPin2 != null)
-                        {
+                        //var piPin2 = db.PiPins.FirstOrDefault(p => p.PiId == sensor.PiId && p.PinNumber == sensor.TemparatureControledPin);
+                        //if (piPin2 != null)
+                        //{
                             decimal temp = Convert.ToInt32(temparature);
-                            if (temp>=35)
-                            {
-                                piPin2.PinStatus = "True";
-                                db.Entry(piPin2).State = EntityState.Modified;
-                                int a = db.SaveChanges();
-                            }
-                            else if (temp<35)
-                            {
-                                piPin2.PinStatus = "False";
-                                db.Entry(piPin2).State = EntityState.Modified;
-                                int a = db.SaveChanges();
-                            }
-                            else { }
-                        }
+                            //if (temp>=35)
+                            //{
+                                //piPin2.PinStatus = "True";
+                                //db.Entry(piPin2).State = EntityState.Modified;
+                                //int a = db.SaveChanges();
+                            //}
+                            //else if (temp<35)
+                            //{
+                               // piPin2.PinStatus = "False";
+                                //db.Entry(piPin2).State = EntityState.Modified;
+                                //int a = db.SaveChanges();
+                            //}
+                            //else { }
+                        //}
 
 
 
@@ -198,7 +201,10 @@ namespace RaspberryPIWebApp.Controllers
                 else
                 {
                     Sensors newsensor = new Sensors();
-                    SaveSensorData(water, temparature, light, newsensor);
+                    //SaveSensorData(water, temparature, light, newsensor);
+                     sensor.Water = water;
+                     newsensor.Temparature = temparature;
+                     newsensor.Light = light;
                     newsensor.PiId = userPi.PiId;
                     db.Sensors.Add(newsensor);
                     db.SaveChanges();
