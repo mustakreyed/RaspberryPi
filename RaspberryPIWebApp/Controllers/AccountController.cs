@@ -16,7 +16,7 @@ namespace RaspberryPIWebApp.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        ApplicationDbContext db=new ApplicationDbContext();
+        ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -24,7 +24,7 @@ namespace RaspberryPIWebApp.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -36,9 +36,9 @@ namespace RaspberryPIWebApp.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -60,7 +60,7 @@ namespace RaspberryPIWebApp.Controllers
 
             if (result == SignInStatus.Success)
             {
-                
+
                 return Json(new { status = 1 }, JsonRequestBehavior.AllowGet);
             }
             else
@@ -70,11 +70,11 @@ namespace RaspberryPIWebApp.Controllers
         }
         //http://easyhome.work/account/UserVarify?userName="data"&password="data"
         [AllowAnonymous]
-       public JsonResult UserVarify(string userName, string password)
+        public JsonResult UserVarify(string userName, string password)
         {
-            var result = SignInManager.PasswordSignIn(userName, password,false, false);
-           
-            if (result==SignInStatus.Success)
+            var result = SignInManager.PasswordSignIn(userName, password, false, false);
+
+            if (result == SignInStatus.Success)
             {
                 var user = db.Users.FirstOrDefault(x => x.UserName == userName);
                 string userId = user.Id;
@@ -84,7 +84,7 @@ namespace RaspberryPIWebApp.Controllers
                 // var piPinlist = db.PiPins.Where(p => p.PiId == piId).Select(p => new { p.Room.RoomName,p.PiPinId,p.PinStatus}).ToList();
                 var roomlist = db.Rooms.Include(p => p.PiPins)
                     .Where(r => r.PiId == piId).
-                    Select(p => new { roomname = p.RoomName, pins = p.PiPins.Select(r => new { id = r.PiPinId, pinNumber = r.PinNumber, status = r.PinStatus, deviceName = r.ApplienceName,deviceLocation=r.Location }) }).ToList();
+                    Select(p => new { roomname = p.RoomName, pins = p.PiPins.Select(r => new { id = r.PiPinId, pinNumber = r.PinNumber, status = r.PinStatus, deviceName = r.ApplienceName, deviceLocation = r.Location }) }).ToList();
                 return Json(new { pi = roomlist }, JsonRequestBehavior.AllowGet);
             }
             else
@@ -93,14 +93,14 @@ namespace RaspberryPIWebApp.Controllers
             }
         }
         [AllowAnonymous]
-        public  void UserPost(string userName, string password,int piPinId,string status)
+        public void UserPost(string userName, string password, int piPinId, string status)
         {
-            var result =  SignInManager.PasswordSignIn(userName, password, false, false);
+            var result = SignInManager.PasswordSignIn(userName, password, false, false);
 
             if (result == SignInStatus.Success)
             {
-                var user=db.Users.FirstOrDefault(u => u.UserName == userName);
-                var userPi = db.Pis.FirstOrDefault(p => p.ApplicationUserId ==user.Id);
+                var user = db.Users.FirstOrDefault(u => u.UserName == userName);
+                var userPi = db.Pis.FirstOrDefault(p => p.ApplicationUserId == user.Id);
                 var pinList = db.PiPins.Where(p => p.PiId == userPi.PiId).ToList();
                 var a = pinList.FirstOrDefault(p => p.PiPinId == piPinId);
                 a.PinStatus = status;
@@ -111,7 +111,7 @@ namespace RaspberryPIWebApp.Controllers
             {
                 throw new Exception();
             }
-            
+
         }
         [AllowAnonymous]
         //http://easyhome.work/account/SensorPost?userName=abdullah&password=123456&water=7&temparature=28.5&light=1
@@ -126,10 +126,74 @@ namespace RaspberryPIWebApp.Controllers
                 var sensor = db.Sensors.FirstOrDefault(s => s.PiId == userPi.PiId);
                 if (sensor != null)
                 {
-                   
+
                     SaveSensorData(water, temparature, light, sensor);
                     db.Entry(sensor).State = EntityState.Modified;
-                    db.SaveChanges();
+                    int status = db.SaveChanges();
+                    if (status.Equals(1))
+                    {
+                        //water Sensor Automated Contol Logic....................
+                        var piPin = db.PiPins.FirstOrDefault(p => p.PiId == sensor.PiId && p.PinNumber == sensor.LightControledPin);
+                        if (piPin != null)
+                        {
+                            if (light == "0" && light == "1")
+                            {
+                                piPin.PinStatus = "True";
+                                db.Entry(piPin).State = EntityState.Modified;
+                                int a = db.SaveChanges();
+                            }
+                            else if (light == "2")
+                            {
+                                piPin.PinStatus = "False";
+                                db.Entry(piPin).State = EntityState.Modified;
+                                int a = db.SaveChanges();
+                            }
+                            else { }
+                        }
+
+                        //Temparature Sensor Automated Contol Logic....................
+                        var piPin1 = db.PiPins.FirstOrDefault(p => p.PiId == sensor.PiId && p.PinNumber == sensor.WaterControledPin);
+                        int waterl = Convert.ToInt32(water);
+                        if (piPin1 != null)
+                        {
+                            if (waterl <3)
+                            {
+                                piPin1.PinStatus = "True";
+                                db.Entry(piPin1).State = EntityState.Modified;
+                                int a = db.SaveChanges();
+                            }
+                            else if (waterl >6)
+                            {
+                                piPin1.PinStatus = "False";
+                                db.Entry(piPin1).State = EntityState.Modified;
+                                int a = db.SaveChanges();
+                            }
+                            else { }
+                        }
+                        //temparaure Sensor Automated Contol Logic....................
+                        var piPin2 = db.PiPins.FirstOrDefault(p => p.PiId == sensor.PiId && p.PinNumber == sensor.TemparatureControledPin);
+                        if (piPin2 != null)
+                        {
+                            decimal temp = Convert.ToInt32(temparature);
+                            if (temp>=35)
+                            {
+                                piPin2.PinStatus = "True";
+                                db.Entry(piPin2).State = EntityState.Modified;
+                                int a = db.SaveChanges();
+                            }
+                            else if (temp<35)
+                            {
+                                piPin2.PinStatus = "False";
+                                db.Entry(piPin2).State = EntityState.Modified;
+                                int a = db.SaveChanges();
+                            }
+                            else { }
+                        }
+
+
+
+                    }
+
                 }
                 else
                 {
@@ -272,7 +336,7 @@ namespace RaspberryPIWebApp.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToAction("Index","UserDashboard");
+                    return RedirectToAction("Index", "UserDashboard");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -313,7 +377,7 @@ namespace RaspberryPIWebApp.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -344,13 +408,13 @@ namespace RaspberryPIWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Name , Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Name, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     UserManager.AddToRole(user.Id, "User");
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
